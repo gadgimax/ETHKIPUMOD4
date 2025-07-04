@@ -1,0 +1,26 @@
+{
+  "name": "ethkipumod4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gadgimax/ETHKIPUMOD4.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gadgimax/ETHKIPUMOD4/issues"
+  },
+  "homepage": "https://github.com/gadgimax/ETHKIPUMOD4#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.0.0",
+    "@openzeppelin/contracts": "^5.3.0",
+    "hardhat": "^2.25.0",
+    "solidity-coverage": "^0.8.16"
+  }
+}
