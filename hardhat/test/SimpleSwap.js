@@ -3,6 +3,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("SimpleSwap - Full tests", function () {
+  // Deploy and mint all the required tokens/contracts
   async function deployFixture() {
     const [owner] = await ethers.getSigners();
 
@@ -84,7 +85,7 @@ describe("SimpleSwap - Full tests", function () {
       simpleSwap.swapExactTokensForTokens(
         amount,
         0,
-        [tokenA.target], // Invalid swap path
+        [tokenA.target], // Invalid swap path (1)
         owner.address,
         deadline
       )
@@ -125,7 +126,7 @@ describe("SimpleSwap - Full tests", function () {
     const { simpleSwap, tokenA, tokenB, owner } = await loadFixture(deployFixture);
     const deadline = (await ethers.provider.getBlock("latest")).timestamp + 1000;
 
-    // Initial balanced ratio of A and B
+    // Initial balanced ratio of A and B (100 and 100)
     const amountA1 = ethers.parseEther("100");
     const amountB1 = ethers.parseEther("100");
 
@@ -144,9 +145,10 @@ describe("SimpleSwap - Full tests", function () {
       deadline
     );
 
+    // Snapshot LP balance after first add liquidity call
     const lpBalanceAfterFirst = await simpleSwap.balanceOf(owner.address);
 
-    // Second add with imbalanced ratio
+    // Second liquidity add with imbalanced ratio
     const amountA2 = ethers.parseEther("50");
     const amountB2 = ethers.parseEther("80");
 
@@ -164,6 +166,7 @@ describe("SimpleSwap - Full tests", function () {
       deadline
     );
 
+    // Snapshot LP balance after second add liquidity call
     const lpBalanceAfterSecond = await simpleSwap.balanceOf(owner.address);
     const newLiquidity = lpBalanceAfterSecond - lpBalanceAfterFirst;
 
@@ -197,6 +200,7 @@ describe("SimpleSwap - Full tests", function () {
 
     // Check price calculation based on input amounts
     const price = await simpleSwap.getPrice(tokenA.target, tokenB.target);
+    // Calculate expected price as tokenB per tokenA scaled to 18 decimals
     const expectedPrice = (amountB * 10n ** 18n) / amountA;
     expect(price).to.equal(expectedPrice);
   });
