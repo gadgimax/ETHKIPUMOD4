@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>SimpleSwap dApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #a78bfa;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c084fc;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-gray-900 to-black text-white min-h-screen flex flex-col">
+    <nav class="bg-gray-800 p-4 shadow-lg flex justify-between items-center z-10 sticky top-0">
+        <h1 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+            SimpleSwap
+        </h1>
+        <div class="flex items-center space-x-4">
+            <div id="priceSection" class="p-2 bg-gray-700 rounded-lg shadow-inner flex items-center">
+                <button id="getPriceBtn"
+                    class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center text-sm mr-2">
+                    <i class="fas fa-tag mr-2"></i> Get Price
+                </button>
+                <p id="priceDisplay" class="text-sm text-gray-300">
+                    AWAITING PRICE...
+                </p>
+            </div>
+            <button id="connectBtn"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center text-base">
+                <i class="fas fa-wallet mr-2"></i> Connect Wallet
+            </button>
+        </div>
+    </nav>
+
+    <div class="flex flex-grow items-center justify-center py-10 px-4">
+        <div class="flex flex-col lg:flex-row gap-8 w-full max-w-6xl">
+
+            <div class="lg:w-1/3 space-y-8">
+                <div
+                    class="bg-gray-800 p-8 rounded-xl shadow-2xl border border-purple-500/30 transform transition-all duration-300 hover:shadow-purple-500/20">
+                    <h2 class="text-2xl font-bold text-center mb-5 text-purple-300">Get Test Tokens</h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        <button id="mintA"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-coins mr-2"></i> Mint 1000 TKA
+                        </button>
+                        <button id="mintB"
+                            class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center">
+                            <i class="fas fa-coins mr-2"></i> Mint 1000 TKB
+                        </button>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-gray-800 p-8 rounded-xl shadow-2xl border border-purple-500/30 transform transition-all duration-300 hover:shadow-purple-500/20">
+                    <h2 class="text-2xl font-bold text-center mb-5 text-purple-300">Approve Tokens</h2>
+                    <button id="approveBtn"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center text-lg">
+                        <i class="fas fa-check-circle mr-3"></i> Approve Tokens for Swap
+                    </button>
+                </div>
+            </div>
+
+            <div
+                class="lg:w-2/3 bg-gray-800 p-8 rounded-xl shadow-2xl border border-purple-500/30 transform transition-all duration-300 hover:shadow-purple-500/20">
+                <h2
+                    class="text-3xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+                    Swap Tokens</h2>
+
+                <div class="mb-4 bg-gray-700 p-4 rounded-lg border border-gray-600">
+                    <label for="swapAmountIn" class="block text-gray-300 text-sm font-semibold mb-2">You pay</label>
+                    <input id="swapAmountIn" type="text" placeholder="Amount Token A"
+                        class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-purple-400 text-lg" />
+                </div>
+
+                <div class="flex justify-center mb-4">
+                    <button id="switchBtn"
+                        class="text-2xl bg-gray-900 hover:bg-gray-700 text-purple-400 hover:text-purple-300 p-3 rounded-full transition duration-300 ease-in-out transform hover:rotate-180 border border-purple-500/50 shadow-md">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                </div>
+
+                <div class="mb-6 bg-gray-700 p-4 rounded-lg border border-gray-600">
+                    <label for="swapAmountOut" class="block text-gray-300 text-sm font-semibold mb-2">You receive
+                        (Estimated)</label>
+                    <input id="swapAmountOut" type="text" placeholder="Estimated Token B"
+                        class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 text-gray-300 placeholder-gray-500 focus:outline-none focus:border-purple-400 text-lg"
+                        readonly />
+                </div>
+
+                <button id="swapBtn"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 text-xl flex items-center justify-center">
+                    <i class="fas fa-random mr-3"></i> Execute Swap
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.10.0/+esm";
+
+        let provider, signer, simpleSwap;
+        let isAToB = true; // track swap direction, default is TKA to TKB
+
+        const tokenA = "0x8d25C5307A3D5A1f5caef06EbA440C3c4a0bde2E"; // TKA deployed address
+        const tokenB = "0xf98D3CF8Cd25748937Ca879C9dAe8a8F313C9A12"; // TKB deployed address
+        const simpleSwapAddress = "0x92DDE44a13729C5D3F47dE497E990088A7D20AFD"; // SimpleSwap deployed address
+
+        const erc20Abi = [
+            "function approve(address spender, uint256 amount) public returns (bool)",
+            "function mint(address to, uint256 amount) public",
+            "function balanceOf(address account) public view returns (uint256)",
+            "function symbol() public view returns (string)"
+        ];
+
+        // Force Metamask injection
+        if (window.ethereum) {
+            window.ethereum.request({ method: "eth_accounts" }).catch(() => { });
+        }
+
+        // Simple Swap ABI JSON
+        const simpleSwapAbi = [{ "inputs": [{ "internalType": "address", "name": "initialOwner", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "allowance", "type": "uint256" }, { "internalType": "uint256", "name": "needed", "type": "uint256" }], "name": "ERC20InsufficientAllowance", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "sender", "type": "address" }, { "internalType": "uint256", "name": "balance", "type": "uint256" }, { "internalType": "uint256", "name": "needed", "type": "uint256" }], "name": "ERC20InsufficientBalance", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "approver", "type": "address" }], "name": "ERC20InvalidApprover", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "receiver", "type": "address" }], "name": "ERC20InvalidReceiver", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "sender", "type": "address" }], "name": "ERC20InvalidSender", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }], "name": "ERC20InvalidSpender", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }], "name": "OwnableInvalidOwner", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "OwnableUnauthorizedAccount", "type": "error" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "spender", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "inputs": [{ "internalType": "address", "name": "tokenA", "type": "address" }, { "internalType": "address", "name": "tokenB", "type": "address" }, { "internalType": "uint256", "name": "amountADesired", "type": "uint256" }, { "internalType": "uint256", "name": "amountBDesired", "type": "uint256" }, { "internalType": "uint256", "name": "amountAMin", "type": "uint256" }, { "internalType": "uint256", "name": "amountBMin", "type": "uint256" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "deadline", "type": "uint256" }], "name": "addLiquidity", "outputs": [{ "internalType": "uint256", "name": "amountA", "type": "uint256" }, { "internalType": "uint256", "name": "amountB", "type": "uint256" }, { "internalType": "uint256", "name": "liquidity", "type": "uint256" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "spender", "type": "address" }], "name": "allowance", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "approve", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "amountIn", "type": "uint256" }, { "internalType": "uint256", "name": "reserveIn", "type": "uint256" }, { "internalType": "uint256", "name": "reserveOut", "type": "uint256" }], "name": "getAmountOut", "outputs": [{ "internalType": "uint256", "name": "amountOut", "type": "uint256" }], "stateMutability": "pure", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "tokenA", "type": "address" }, { "internalType": "address", "name": "tokenB", "type": "address" }], "name": "getPrice", "outputs": [{ "internalType": "uint256", "name": "price", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "tokenA", "type": "address" }, { "internalType": "address", "name": "tokenB", "type": "address" }], "name": "getReserves", "outputs": [{ "internalType": "uint256", "name": "reserveA", "type": "uint256" }, { "internalType": "uint256", "name": "reserveB", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "tokenA", "type": "address" }, { "internalType": "address", "name": "tokenB", "type": "address" }, { "internalType": "uint256", "name": "liquidity", "type": "uint256" }, { "internalType": "uint256", "name": "amountAMin", "type": "uint256" }, { "internalType": "uint256", "name": "amountBMin", "type": "uint256" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "deadline", "type": "uint256" }], "name": "removeLiquidity", "outputs": [{ "internalType": "uint256", "name": "amountA", "type": "uint256" }, { "internalType": "uint256", "name": "amountB", "type": "uint256" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "amountIn", "type": "uint256" }, { "internalType": "uint256", "name": "amountOutMin", "type": "uint256" }, { "internalType": "address[]", "name": "path", "type": "address[]" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "deadline", "type": "uint256" }], "name": "swapExactTokensForTokens", "outputs": [{ "internalType": "uint256[]", "name": "amounts", "type": "uint256[]" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "transfer", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
+
+        // Add click event listeners on DOM Content Loaded event
+        window.addEventListener("DOMContentLoaded", () => {
+            const connectBtn = document.getElementById("connectBtn");
+            const approveBtn = document.getElementById("approveBtn");
+            const getPriceBtn = document.getElementById("getPriceBtn");
+            const swapBtn = document.getElementById("swapBtn");
+            const mintABtn = document.getElementById("mintA");
+            const mintBBtn = document.getElementById("mintB");
+            const switchBtn = document.getElementById("switchBtn");
+            const swapAmountIn = document.getElementById("swapAmountIn");
+
+            switchBtn.addEventListener("click", switchTokens);
+            swapAmountIn.addEventListener("input", updateEstimatedOutput);
+            mintABtn.addEventListener("click", mintTokenA);
+            mintBBtn.addEventListener("click", mintTokenB);
+            connectBtn.addEventListener("click", connectWallet);
+            approveBtn.addEventListener("click", approveTokens);
+            getPriceBtn.addEventListener("click", getPrice);
+            swapBtn.addEventListener("click", swapTokens);
+
+            // Check Metamask injection after page content loads
+            if (window.ethereum) {
+                provider = new ethers.BrowserProvider(window.ethereum);
+            } else {
+                alert("MetaMask not detected. Please install it to use this dApp.");
+            }
+        });
+
+        // This function connects the user wallet through ether JS
+        async function connectWallet() {
+            try {
+                const accounts = await provider.send("eth_requestAccounts", []);
+                signer = await provider.getSigner();
+                const address = await signer.getAddress();
+
+                simpleSwap = new ethers.Contract(simpleSwapAddress, simpleSwapAbi, signer);
+
+                const btn = document.getElementById("connectBtn");
+                // Display connected address
+                btn.innerText = `Connected: ${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+                // Change connect button styling
+                btn.classList.remove("bg-blue-600", "hover:bg-blue-700");
+                btn.classList.add("bg-green-600", "opacity-90", "cursor-default");
+                btn.disabled = true; // Disable after connecting
+
+                alert(`Wallet connected! Address: ${address}`);
+            } catch (err) {
+                console.error("Connection error:", err);
+                alert("Failed to connect wallet. Ensure MetaMask is installed and unlocked.");
+            }
+        }
+
+        // Get token symbols from the etherJS contracts
+        async function getTokenSymbols() {
+            try {
+                const tokenA_contract = new ethers.Contract(tokenA, erc20Abi, provider);
+                const tokenB_contract = new ethers.Contract(tokenB, erc20Abi, provider);
+                const [symbolA, symbolB] = await Promise.all([
+                    tokenA_contract.symbol(),
+                    tokenB_contract.symbol()
+                ]);
+                return { symbolA, symbolB };
+            } catch (e) {
+                console.warn("Could not fetch token symbols.");
+                return { symbolA: "TKA", symbolB: "TKB" };
+            }
+        }
+
+
+        // Mint TKA to make testing easier
+        async function mintTokenA() {
+            if (!signer) return alert("Connect wallet first.");
+            try {
+                const userAddress = await signer.getAddress();
+                const tokenAContract = new ethers.Contract(tokenA, erc20Abi, signer);
+                const tx = await tokenAContract.mint(userAddress, ethers.parseEther("1000"));
+                document.getElementById("mintA").innerText = "Minting Token A...";
+                document.getElementById("mintA").disabled = true;
+                await provider.waitForTransaction(tx.hash);
+                alert("Minted 1000 Token A!");
+                document.getElementById("mintA").innerText = "Mint 1000 Token A";
+                document.getElementById("mintA").disabled = false;
+            } catch (err) {
+                console.error("Mint A error:", err);
+                alert("Minting Token A failed. See console for details.");
+                document.getElementById("mintA").innerText = "Mint 1000 Token A";
+                document.getElementById("mintA").disabled = false;
+            }
+        }
+
+        // Mint TKB to make testing easier
+        async function mintTokenB() {
+            if (!signer) return alert("Connect wallet first.");
+            try {
+                const userAddress = await signer.getAddress();
+                const tokenBContract = new ethers.Contract(tokenB, erc20Abi, signer);
+                const tx = await tokenBContract.mint(userAddress, ethers.parseEther("1000"));
+                document.getElementById("mintB").innerText = "Minting Token B...";
+                document.getElementById("mintB").disabled = true;
+                await provider.waitForTransaction(tx.hash);
+                alert("Minted 1000 Token B!");
+                document.getElementById("mintB").innerText = "Mint 1000 Token B";
+                document.getElementById("mintB").disabled = false;
+            } catch (err) {
+                console.error("Mint B error:", err);
+                alert("Minting Token B failed. See console for details.");
+                document.getElementById("mintB").innerText = "Mint 1000 Token B";
+                document.getElementById("mintB").disabled = false;
+            }
+        }
+
+        // Approve TKA and TKB spending to make testing easier
+        async function approveTokens() {
+            if (!signer) return alert("Connect wallet first.");
+            const MAX_UINT = ethers.MaxUint256;
+
+            try {
+                const tokenAContract = new ethers.Contract(tokenA, erc20Abi, signer);
+                const tokenBContract = new ethers.Contract(tokenB, erc20Abi, signer);
+
+                document.getElementById("approveBtn").innerText = "Approving A...";
+                document.getElementById("approveBtn").disabled = true;
+                const txA = await tokenAContract.approve(simpleSwapAddress, MAX_UINT);
+                await provider.waitForTransaction(txA.hash);
+
+                document.getElementById("approveBtn").innerText = "Approving B...";
+                const txB = await tokenBContract.approve(simpleSwapAddress, MAX_UINT);
+                await provider.waitForTransaction(txB.hash);
+
+                alert("Tokens approved!");
+                document.getElementById("approveBtn").innerText = "Tokens Approved!";
+                document.getElementById("approveBtn").classList.remove("bg-green-600", "hover:bg-green-700");
+                document.getElementById("approveBtn").classList.add("bg-green-700", "opacity-90", "cursor-default");
+
+            } catch (err) {
+                console.error("Approval error:", err);
+                alert("Approval failed. See console for details.");
+                document.getElementById("approveBtn").innerText = "Approve Tokens";
+                document.getElementById("approveBtn").disabled = false;
+            }
+        }
+
+        // Calls getPrice from SimpleSwap to calculate token exchange values dynamically
+        async function getPrice() {
+            if (!simpleSwap) return alert("Connect wallet first.");
+            try {
+                // Ensure the price displayed matches the current swap direction
+                const price = await simpleSwap.getPrice(
+                    isAToB ? tokenA : tokenB,
+                    isAToB ? tokenB : tokenA
+                );
+                const tokenA_contract = new ethers.Contract(tokenA, erc20Abi, provider);
+                const tokenB_contract = new ethers.Contract(tokenB, erc20Abi, provider);
+                const { symbolA, symbolB } = await getTokenSymbols();
+
+                const displayPrice = ethers.formatEther(price);
+                if (isAToB) {
+                    document.getElementById("priceDisplay").innerText = `1 ${symbolA} = ${displayPrice} ${symbolB}`;
+                } else {
+                    document.getElementById("priceDisplay").innerText = `1 ${symbolB} = ${displayPrice} ${symbolA}`;
+                }
+
+            } catch (err) {
+                console.error("Price error:", err);
+                document.getElementById("priceDisplay").innerText = "Error fetching price.";
+                alert("Error fetching price. Ensure liquidity is added to the contract.");
+            }
+        }
+
+        // Switch swap direction (A to B / B to A)
+        async function switchTokens() {
+            // Toggle direction
+            isAToB = !isAToB;
+
+            const tokenA_contract = new ethers.Contract(tokenA, erc20Abi, provider);
+            const tokenB_contract = new ethers.Contract(tokenB, erc20Abi, provider);
+            const { symbolA, symbolB } = await getTokenSymbols();
+            const inPlaceholder = isAToB ? `Amount ${symbolA}` : `Amount ${symbolB}`;
+            const outPlaceholder = isAToB ? `Estimated ${symbolB}` : `Estimated ${symbolA}`;
+
+            document.getElementById("swapAmountIn").placeholder = inPlaceholder;
+            document.getElementById("swapAmountOut").placeholder = outPlaceholder;
+            document.getElementById("swapAmountIn").value = "";
+            document.getElementById("swapAmountOut").value = "";
+
+            // Update price display with new direction
+            await getPrice();
+        }
+
+        // Calculate exchange output based on SimpleSwap getAmountOut()
+        async function updateEstimatedOutput() {
+            const amountIn = document.getElementById("swapAmountIn").value;
+            const amountOut = document.getElementById("swapAmountOut");
+            amountOut.value = "Calculating..."; // Update Swap button label
+
+            if (!amountIn || isNaN(amountIn) || parseFloat(amountIn) <= 0) {
+                amountOut.value = "";
+                return;
+            }
+
+            if (!simpleSwap) {
+                amountOut.value = "Connect wallet";
+                return;
+            }
+
+            try {
+                // Get reserves for calculation
+                const [reserve0, reserve1] = await simpleSwap.getReserves(tokenA, tokenB);
+
+                let reserveIn, reserveOut;
+
+                if (isAToB) {
+                    reserveIn = reserve0;
+                    reserveOut = reserve1;
+                } else {
+                    reserveIn = reserve1;
+                    reserveOut = reserve0;
+                }
+
+                // Call getAmountOut for precise calculation
+                const parsedAmountIn = ethers.parseEther(amountIn);
+                const estimatedAmountOut = await simpleSwap.getAmountOut(
+                    parsedAmountIn,
+                    reserveIn,
+                    reserveOut
+                );
+
+                amountOut.value = ethers.formatEther(estimatedAmountOut);
+            } catch (err) {
+                console.error("Price calculation failed:", err);
+                amountOut.value = "Error estimating";
+            }
+        }
+
+
+        // Execute token Swap
+        async function swapTokens() {
+            if (!signer || !simpleSwap) return alert("Connect wallet first.");
+
+            const amountIn = document.getElementById("swapAmountIn").value;
+            const amountOutEstimated = document.getElementById("swapAmountOut").value;
+            if (!amountIn || isNaN(amountIn) || parseFloat(amountIn) <= 0) return alert("Please enter a valid amount to swap.");
+            if (!amountOutEstimated || isNaN(amountOutEstimated)) return alert("Estimated output is not valid. Try getting price first or check input.");
+
+
+            const parsedIn = ethers.parseEther(amountIn);
+            const slippage = 0.005; // 0.5% slippage
+            const minOut = parseFloat(amountOutEstimated) * (1 - slippage);
+            const parsedMinOut = ethers.parseEther(minOut.toFixed(18)); // Ensure enough decimal places for parsing
+            const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 minutes from now
+            const userAddress = await signer.getAddress();
+            const path = isAToB ? [tokenA, tokenB] : [tokenB, tokenA];
+
+            try {
+                document.getElementById("swapBtn").innerText = "Swapping...";
+                document.getElementById("swapBtn").disabled = true;
+
+                const tx = await simpleSwap.swapExactTokensForTokens(
+                    parsedIn,
+                    parsedMinOut, // Apply slippage
+                    path,
+                    userAddress,
+                    deadline
+                );
+                await provider.waitForTransaction(tx.hash);
+                alert("Swap successful!");
+                // Return swap button to default values
+                document.getElementById("swapBtn").innerText = "Execute Swap";
+                document.getElementById("swapBtn").disabled = false;
+                document.getElementById("swapAmountIn").value = "";
+                document.getElementById("swapAmountOut").value = "";
+            } catch (err) {
+                console.error("Swap error:", err);
+                alert("Swap failed. Check console for details.");
+                document.getElementById("swapBtn").innerText = "Execute Swap";
+                document.getElementById("swapBtn").disabled = false;
+            }
+        }
+
+        // Initialize display with correct placeholder based on initial isAToB state
+        document.addEventListener("DOMContentLoaded", async () => {
+            const tokenA_contract = new ethers.Contract(tokenA, erc20Abi, provider);
+            const tokenB_contract = new ethers.Contract(tokenB, erc20Abi, provider);
+
+            try {
+                const { symbolA, symbolB } = await getTokenSymbols();
+                document.getElementById("swapAmountIn").placeholder = `Amount ${symbolA}`;
+                document.getElementById("swapAmountOut").placeholder = `Estimated ${symbolB}`;
+            } catch (e) {
+                console.warn("Could not fetch token symbols on load, using default placeholders.");
+                document.getElementById("swapAmountIn").placeholder = "Amount Token A";
+                document.getElementById("swapAmountOut").placeholder = "Estimated Token B";
+            }
+        });
+    </script>
+</body>
+
+</html>
