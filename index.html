@@ -122,8 +122,8 @@
         let provider, signer, simpleSwap;
         let isAToB = true; // track swap direction, default is TKA to TKB
 
-        const tokenA = "0x8d25C5307A3D5A1f5caef06EbA440C3c4a0bde2E"; // TKA deployed address
-        const tokenB = "0xf98D3CF8Cd25748937Ca879C9dAe8a8F313C9A12"; // TKB deployed address
+        const tokenA = "0x697abAFb930a37c44F06742915B77CBC67945e09"; // TKA deployed address
+        const tokenB = "0xfeB21BD73EcC7B4923A637603312C300ebEE5A9E"; // TKB deployed address
         const simpleSwapAddress = "0x92DDE44a13729C5D3F47dE497E990088A7D20AFD"; // SimpleSwap deployed address
 
         const erc20Abi = [
@@ -221,12 +221,12 @@
                 document.getElementById("mintA").disabled = true;
                 await provider.waitForTransaction(tx.hash);
                 alert("Minted 1000 Token A!");
-                document.getElementById("mintA").innerText = "Mint 1000 Token A";
+                document.getElementById("mintA").innerText = "Mint 1000 TKA";
                 document.getElementById("mintA").disabled = false;
             } catch (err) {
                 console.error("Mint A error:", err);
                 alert("Minting Token A failed. See console for details.");
-                document.getElementById("mintA").innerText = "Mint 1000 Token A";
+                document.getElementById("mintA").innerText = "Mint 1000 TKA";
                 document.getElementById("mintA").disabled = false;
             }
         }
@@ -242,12 +242,12 @@
                 document.getElementById("mintB").disabled = true;
                 await provider.waitForTransaction(tx.hash);
                 alert("Minted 1000 Token B!");
-                document.getElementById("mintB").innerText = "Mint 1000 Token B";
+                document.getElementById("mintB").innerText = "Mint 1000 TKB";
                 document.getElementById("mintB").disabled = false;
             } catch (err) {
                 console.error("Mint B error:", err);
                 alert("Minting Token B failed. See console for details.");
-                document.getElementById("mintB").innerText = "Mint 1000 Token B";
+                document.getElementById("mintB").innerText = "Mint 1000 TKB";
                 document.getElementById("mintB").disabled = false;
             }
         }
