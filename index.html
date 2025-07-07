@@ -120,16 +120,16 @@
         import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.10.0/+esm";
 
         let provider, signer, simpleSwap;
-        let isAToB = true; // track swap direction, default is TKA to TKB
+        let isAToB = true; // Track swap direction, default is TKA to TKB
 
         const tokenA = "0x697abAFb930a37c44F06742915B77CBC67945e09"; // TKA deployed address
         const tokenB = "0xfeB21BD73EcC7B4923A637603312C300ebEE5A9E"; // TKB deployed address
         const simpleSwapAddress = "0x39f15be6161cD3b9E05Ca2a0dAa00BeB7E5D9A15"; // SimpleSwap deployed address
 
+        // ERC20 functions for approve/mint buttons and get symbols
         const erc20Abi = [
             "function approve(address spender, uint256 amount) public returns (bool)",
             "function mint(address to, uint256 amount) public",
-            "function balanceOf(address account) public view returns (uint256)",
             "function symbol() public view returns (string)"
         ];
 
@@ -141,7 +141,7 @@
         // Simple Swap ABI JSON
         const simpleSwapAbi = [{ "inputs": [{ "internalType": "address", "name": "initialOwner", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "allowance", "type": "uint256" }, { "internalType": "uint256", "name": "needed", "type": "uint256" }], "name": "ERC20InsufficientAllowance", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "sender", "type": "address" }, { "internalType": "uint256", "name": "balance", "type": "uint256" }, { "internalType": "uint256", "name": "needed", "type": "uint256" }], "name": "ERC20InsufficientBalance", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "approver", "type": "address" }], "name": "ERC20InvalidApprover", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "receiver", "type": "address" }], "name": "ERC20InvalidReceiver", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "sender", "type": "address" }], "name": "ERC20InvalidSender", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }], "name": "ERC20InvalidSpender", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }], "name": "OwnableInvalidOwner", "type": "error" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "OwnableUnauthorizedAccount", "type": "error" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "owner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "spender", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "from", "type": "address" }, { "indexed": true, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "inputs": [{ "internalType": "address", "name": "tokenA", "type": "address" }, { "internalType": "address", "name": "tokenB", "type": "address" }, { "internalType": "uint256", "name": "amountADesired", "type": "uint256" }, { "internalType": "uint256", "name": "amountBDesired", "type": "uint256" }, { "internalType": "uint256", "name": "amountAMin", "type": "uint256" }, { "internalType": "uint256", "name": "amountBMin", "type": "uint256" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "deadline", "type": "uint256" }], "name": "addLiquidity", "outputs": [{ "internalType": "uint256", "name": "amountA", "type": "uint256" }, { "internalType": "uint256", "name": "amountB", "type": "uint256" }, { "internalType": "uint256", "name": "liquidity", "type": "uint256" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "owner", "type": "address" }, { "internalType": "address", "name": "spender", "type": "address" }], "name": "allowance", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "approve", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "account", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "amountIn", "type": "uint256" }, { "internalType": "uint256", "name": "reserveIn", "type": "uint256" }, { "internalType": "uint256", "name": "reserveOut", "type": "uint256" }], "name": "getAmountOut", "outputs": [{ "internalType": "uint256", "name": "amountOut", "type": "uint256" }], "stateMutability": "pure", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "tokenA", "type": "address" }, { "internalType": "address", "name": "tokenB", "type": "address" }], "name": "getPrice", "outputs": [{ "internalType": "uint256", "name": "price", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "tokenA", "type": "address" }, { "internalType": "address", "name": "tokenB", "type": "address" }], "name": "getReserves", "outputs": [{ "internalType": "uint256", "name": "reserveA", "type": "uint256" }, { "internalType": "uint256", "name": "reserveB", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "tokenA", "type": "address" }, { "internalType": "address", "name": "tokenB", "type": "address" }, { "internalType": "uint256", "name": "liquidity", "type": "uint256" }, { "internalType": "uint256", "name": "amountAMin", "type": "uint256" }, { "internalType": "uint256", "name": "amountBMin", "type": "uint256" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "deadline", "type": "uint256" }], "name": "removeLiquidity", "outputs": [{ "internalType": "uint256", "name": "amountA", "type": "uint256" }, { "internalType": "uint256", "name": "amountB", "type": "uint256" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "amountIn", "type": "uint256" }, { "internalType": "uint256", "name": "amountOutMin", "type": "uint256" }, { "internalType": "address[]", "name": "path", "type": "address[]" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "deadline", "type": "uint256" }], "name": "swapExactTokensForTokens", "outputs": [{ "internalType": "uint256[]", "name": "amounts", "type": "uint256[]" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "transfer", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "from", "type": "address" }, { "internalType": "address", "name": "to", "type": "address" }, { "internalType": "uint256", "name": "value", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
 
-        // Add click event listeners on DOM Content Loaded event
+        // Setup button clicks for the web app
         window.addEventListener("DOMContentLoaded", () => {
             const connectBtn = document.getElementById("connectBtn");
             const approveBtn = document.getElementById("approveBtn");
@@ -210,47 +210,41 @@
         }
 
 
-        // Mint TKA to make testing easier
-        async function mintTokenA() {
+        // Generic mint function for Token A or B
+        async function mintToken(tokenAddress, buttonId, label) {
             if (!signer) return alert("Connect wallet first.");
             try {
                 const userAddress = await signer.getAddress();
-                const tokenAContract = new ethers.Contract(tokenA, erc20Abi, signer);
-                const tx = await tokenAContract.mint(userAddress, ethers.parseEther("1000"));
-                document.getElementById("mintA").innerText = "Minting Token A...";
-                document.getElementById("mintA").disabled = true;
+                const tokenContract = new ethers.Contract(tokenAddress, erc20Abi, signer);
+                const button = document.getElementById(buttonId);
+
+                button.innerText = `Minting ${label}...`;
+                button.disabled = true;
+
+                const tx = await tokenContract.mint(userAddress, ethers.parseEther("1000"));
                 await provider.waitForTransaction(tx.hash);
-                alert("Minted 1000 Token A!");
-                document.getElementById("mintA").innerText = "Mint 1000 TKA";
-                document.getElementById("mintA").disabled = false;
+
+                alert(`Minted 1000 ${label}!`);
+                button.innerText = `Mint 1000 ${label}`;
+                button.disabled = false;
             } catch (err) {
-                console.error("Mint A error:", err);
-                alert("Minting Token A failed. See console for details.");
-                document.getElementById("mintA").innerText = "Mint 1000 TKA";
-                document.getElementById("mintA").disabled = false;
+                console.error(`Mint ${label} error:`, err);
+                alert(`Minting ${label} failed. See console for details.`);
+                const button = document.getElementById(buttonId);
+                button.innerText = `Mint 1000 ${label}`;
+                button.disabled = false;
             }
         }
 
-        // Mint TKB to make testing easier
-        async function mintTokenB() {
-            if (!signer) return alert("Connect wallet first.");
-            try {
-                const userAddress = await signer.getAddress();
-                const tokenBContract = new ethers.Contract(tokenB, erc20Abi, signer);
-                const tx = await tokenBContract.mint(userAddress, ethers.parseEther("1000"));
-                document.getElementById("mintB").innerText = "Minting Token B...";
-                document.getElementById("mintB").disabled = true;
-                await provider.waitForTransaction(tx.hash);
-                alert("Minted 1000 Token B!");
-                document.getElementById("mintB").innerText = "Mint 1000 TKB";
-                document.getElementById("mintB").disabled = false;
-            } catch (err) {
-                console.error("Mint B error:", err);
-                alert("Minting Token B failed. See console for details.");
-                document.getElementById("mintB").innerText = "Mint 1000 TKB";
-                document.getElementById("mintB").disabled = false;
-            }
+        // Wrapper functions
+        function mintTokenA() {
+            mintToken(tokenA, "mintA", "TKA");
         }
+
+        function mintTokenB() {
+            mintToken(tokenB, "mintB", "TKB");
+        }
+
 
         // Approve TKA and TKB spending to make testing easier
         async function approveTokens() {
@@ -389,7 +383,7 @@
             const parsedIn = ethers.parseEther(amountIn);
             const slippage = 0.005; // 0.5% slippage
             const minOut = parseFloat(amountOutEstimated) * (1 - slippage);
-            const parsedMinOut = ethers.parseEther(minOut.toFixed(18)); // Ensure enough decimal places for parsing
+            const parsedMinOut = ethers.parseEther(minOut.toFixed(18)); // Fix decimal places for parsing
             const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 minutes from now
             const userAddress = await signer.getAddress();
             const path = isAToB ? [tokenA, tokenB] : [tokenB, tokenA];
