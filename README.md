@@ -1,4 +1,4 @@
-# 🟣 SimpleSwap dApp – Module 4 Project
+# SimpleSwap dApp – Module 4 Project
 
 This repository contains the practical project for **Module 4**, building on the `SimpleSwap` smart contract from Module 3. The goal was to create an interactive front-end and implement automated testing with at least 50% coverage.
 
@@ -53,7 +53,7 @@ This repository contains the practical project for **Module 4**, building on the
 - Unit testing with `Chai` and Hardhat Toolbox
 - Code coverage measured with: 'npx hardhat coverage'
 
-- ✅ Achieved **≥ 50% test coverage**
+- Achieved **≥ 50% test coverage**
 ![alt text](image.png)
 
 To run the contract tests and check coverage:
@@ -112,7 +112,7 @@ The following test cases were implemented to validate the behavior of the `Simpl
 - [TKB (Token B)](https://sepolia.etherscan.io/address/0xfeB21BD73EcC7B4923A637603312C300ebEE5A9E#code)
 - [SimpleSwap Contract](https://sepolia.etherscan.io/address/0x39f15be6161cD3b9E05Ca2a0dAa00BeB7E5D9A15)
 
-- 🔗 **Live dApp on GitHub Pages:**  
+- **Live dApp on GitHub Pages:**  
   [https://gadgimax.github.io/ETHKIPUMOD4/](https://gadgimax.github.io/ETHKIPUMOD4/)
 
 ### Author
