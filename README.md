@@ -18,7 +18,7 @@ This repository contains the practical project for **Module 4**, building on the
   - Live price estimate when entering input amount
   - Execute token swaps with **0.5% slippage tolerance**
   - Approve tokens for swap
-  - **Mint 1000 TKA and 1000 TKB**
+  - Mint 1000 TKA and 1000 TKB
 
 ---
 
@@ -29,6 +29,7 @@ This repository contains the practical project for **Module 4**, building on the
 - Code coverage measured with: 'npx hardhat coverage'
 
 - ✅ Achieved **≥ 50% test coverage**
+![alt text](image.png)
 
 ---
 
