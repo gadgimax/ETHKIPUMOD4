@@ -144,6 +144,7 @@
         
         // Setup button clicks for the web app
         window.addEventListener("DOMContentLoaded", () => {
+            // Get DOM elements
             const connectBtn = document.getElementById("connectBtn");
             const approveBtn = document.getElementById("approveBtn");
             const getPriceBtn = document.getElementById("getPriceBtn");
@@ -153,6 +154,7 @@
             const switchBtn = document.getElementById("switchBtn");
             const swapAmountIn = document.getElementById("swapAmountIn");
 
+            // Setup click and input events
             switchBtn.addEventListener("click", switchTokens);
             swapAmountIn.addEventListener("input", updateEstimatedOutput);
             mintABtn.addEventListener("click", mintTokenA);
@@ -228,13 +230,16 @@
                 const userAddress = await signer.getAddress();
                 const button = document.getElementById(buttonId);
 
+                // Update and disable button after click to MINTING
                 button.innerText = `Minting ${label}...`;
                 button.disabled = true;
 
+                // Wait for mint transaction
                 const tx = await tokenContract.mint(userAddress, ethers.parseEther("1000"));
                 await provider.waitForTransaction(tx.hash);
 
                 alert(`Minted 1000 ${label}!`);
+                // Restore button styles and enable
                 button.innerText = `Mint 1000 ${label}`;
                 button.disabled = false;
             } catch (err) {
@@ -318,6 +323,7 @@
             isAToB = !isAToB;
 
             const { symbolA, symbolB } = await getTokenSymbols();
+            // Update swap placeholders
             const inPlaceholder = isAToB ? `Amount ${symbolA}` : `Amount ${symbolB}`;
             const outPlaceholder = isAToB ? `Estimated ${symbolB}` : `Estimated ${symbolA}`;
 
@@ -336,6 +342,7 @@
             const amountOut = document.getElementById("swapAmountOut");
             amountOut.value = "Calculating..."; // Update Swap button label
 
+            // Input validation for incorrect IN amounts
             if (!amountIn || isNaN(amountIn) || parseFloat(amountIn) <= 0) {
                 amountOut.value = "";
                 return;
@@ -352,6 +359,7 @@
 
                 let reserveIn, reserveOut;
 
+                // Sort reserves based on swap direction
                 if (isAToB) {
                     reserveIn = reserve0;
                     reserveOut = reserve1;
