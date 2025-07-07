@@ -119,7 +119,7 @@
     <script type="module">
         import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.10.0/+esm";
 
-        let provider, signer, simpleSwap;
+        let provider, signer, simpleSwap; // Ethers JS objects for interacting with contracts
         let isAToB = true; // Track swap direction, default is TKA to TKB
 
         const tokenA = "0x697abAFb930a37c44F06742915B77CBC67945e09"; // TKA deployed address
@@ -172,6 +172,7 @@
         // This function connects the user wallet through ether JS
         async function connectWallet() {
             try {
+                // Request access to user MetaMask accounts
                 const accounts = await provider.send("eth_requestAccounts", []);
                 signer = await provider.getSigner();
                 const address = await signer.getAddress();
@@ -257,10 +258,12 @@
 
                 document.getElementById("approveBtn").innerText = "Approving A...";
                 document.getElementById("approveBtn").disabled = true;
+                // Approve SimpleSwap contract to spend unlimited TKA
                 const txA = await tokenAContract.approve(simpleSwapAddress, MAX_UINT);
                 await provider.waitForTransaction(txA.hash);
 
                 document.getElementById("approveBtn").innerText = "Approving B...";
+                // Approve SimpleSwap contract to spend unlimited TKB
                 const txB = await tokenBContract.approve(simpleSwapAddress, MAX_UINT);
                 await provider.waitForTransaction(txB.hash);
 
@@ -290,6 +293,7 @@
                 const tokenB_contract = new ethers.Contract(tokenB, erc20Abi, provider);
                 const { symbolA, symbolB } = await getTokenSymbols();
 
+                // Convert price from wei to ether
                 const displayPrice = ethers.formatEther(price);
                 if (isAToB) {
                     document.getElementById("priceDisplay").innerText = `1 ${symbolA} = ${displayPrice} ${symbolB}`;
@@ -341,7 +345,7 @@
             }
 
             try {
-                // Get reserves for calculation
+                // Get reserves of TKA and TKB from contract
                 const [reserve0, reserve1] = await simpleSwap.getReserves(tokenA, tokenB);
 
                 let reserveIn, reserveOut;
@@ -386,12 +390,14 @@
             const parsedMinOut = ethers.parseEther(minOut.toFixed(18)); // Fix decimal places for parsing
             const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 minutes from now
             const userAddress = await signer.getAddress();
+            // Create path for token swap based on selected direction
             const path = isAToB ? [tokenA, tokenB] : [tokenB, tokenA];
 
             try {
                 document.getElementById("swapBtn").innerText = "Swapping...";
                 document.getElementById("swapBtn").disabled = true;
 
+                // Execute swapExactTokensForTokens via contract
                 const tx = await simpleSwap.swapExactTokensForTokens(
                     parsedIn,
                     parsedMinOut, // Apply slippage
