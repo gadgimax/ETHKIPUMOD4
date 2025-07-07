@@ -72,7 +72,7 @@ To run the contract tests and check coverage:
 
 The following test cases were implemented to validate the behavior of the `SimpleSwap` smart contract:
 
-- **Validation & Revert Checks**
+**Validation & Revert Checks**
 
 - Reverts if `getAmountOut` is called with zero input.
 - Reverts if `getAmountOut` is called with zero reserves.
@@ -80,13 +80,13 @@ The following test cases were implemented to validate the behavior of the `Simpl
 - Reverts if one of the token addresses is the zero address in `addLiquidity`.
 - Reverts if the swap path length is not exactly 2 in `swapExactTokensForTokens`.
 
-- **Liquidity Management**
+**Liquidity Management**
 
 - Successfully adds liquidity and mints LP tokens.
 - Mints correct amount of LP tokens using `min(liquidityA, liquidityB)` when reserves already exist.
 - Removes liquidity and correctly returns tokenA and tokenB to the liquidity provider.
 
-- **Swapping & Price Calculation**
+**Swapping & Price Calculation**
 
 - Calculates price correctly after liquidity is added (`getPrice`).
 - Executes token swap with expected output using `swapExactTokensForTokens`.
