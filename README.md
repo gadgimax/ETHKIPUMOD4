@@ -115,4 +115,9 @@ The following test cases were implemented to validate the behavior of the `Simpl
 - 🔗 **Live dApp on GitHub Pages:**  
   [https://gadgimax.github.io/ETHKIPUMOD4/](https://gadgimax.github.io/ETHKIPUMOD4/)
 
+### Author
+
+Developed by **Gaston Gorosito**  
+GitHub: [https://github.com/gadgimax](https://github.com/gadgimax)
+
 
