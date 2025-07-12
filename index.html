@@ -216,7 +216,7 @@
                     tokenB_contract.symbol()
                 ]);
                 return { symbolA, symbolB };
-            } catch (e) {
+            } catch (err) {
                 console.warn("Could not fetch token symbols.");
                 return { symbolA: "TKA", symbolB: "TKB" };
             }
@@ -442,7 +442,7 @@
                 const { symbolA, symbolB } = await getTokenSymbols();
                 document.getElementById("swapAmountIn").placeholder = `Amount ${symbolA}`;
                 document.getElementById("swapAmountOut").placeholder = `Estimated ${symbolB}`;
-            } catch (e) {
+            } catch (err) {
                 console.warn("Could not fetch token symbols on load, using default placeholders.");
                 document.getElementById("swapAmountIn").placeholder = "Amount Token A";
                 document.getElementById("swapAmountOut").placeholder = "Estimated Token B";

@@ -163,15 +163,15 @@ contract SimpleSwap is ERC20, Ownable {
     /// @param newReserveB New amount of tokenB in the pool
     function updateReserves(address tokenA, address tokenB, uint newReserveA, uint newReserveB) private {
         (address token0, address token1) = sortTokens(tokenA, tokenB);
-        Reserve storage r = reserves[token0][token1];
+        Reserve storage reserve = reserves[token0][token1];
 
         // Check if values differ to save gas from writting in storage
         if (tokenA == token0) {
-            if (r.reserve0 != newReserveA) r.reserve0 = newReserveA;
-            if (r.reserve1 != newReserveB) r.reserve1 = newReserveB;
+            if (reserve.reserve0 != newReserveA) reserve.reserve0 = newReserveA;
+            if (reserve.reserve1 != newReserveB) reserve.reserve1 = newReserveB;
         } else {
-            if (r.reserve0 != newReserveB) r.reserve0 = newReserveB;
-            if (r.reserve1 != newReserveA) r.reserve1 = newReserveA;
+            if (reserve.reserve0 != newReserveB) reserve.reserve0 = newReserveB;
+            if (reserve.reserve1 != newReserveA) reserve.reserve1 = newReserveA;
         }
     }
 
