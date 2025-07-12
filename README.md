@@ -106,6 +106,57 @@ The following test cases were implemented to validate the behavior of the `Simpl
 
 ---
 
+## 📁 Swap Code and Files Structure
+
+- `SimpleSwap.sol`: Complete source code of the LP token contract with swap and liquidity functionality.
+- `TokenA.sol`: Complete source code of Token A (TKA) contract.
+- `TokenB.sol`: Complete source code of Token B (TKB) contract.
+
+## 📚 Key Functions
+
+### `swapExactTokensForTokens(...)`
+
+Swaps an exact input amount of one token for as many output tokens as possible.
+
+**Inputs:**
+- `uint amountIn` — Exact amount of input tokens to swap  
+- `uint amountOutMin` — Minimum acceptable amount of output tokens (slippage protection)  
+- `address[] path` — Must be length 2: `[tokenIn, tokenOut]`  
+- `address to` — Recipient of the output tokens  
+- `uint deadline` — Unix timestamp after which the transaction is invalid
+
+**Returns:**
+- `uint[] amounts` — `[amountIn, amountOut]` of tokens swapped  
+
+---
+
+### `getPrice(...)`
+
+Returns the current price of one token in terms of another.
+
+**Inputs:**
+- `address tokenA` — Token to price  
+- `address tokenB` — Token used as reference
+
+**Returns:**
+- `uint price` — Price of `tokenA` in `tokenB` units (scaled by 1e18)  
+
+---
+
+### `getAmountOut(...)`
+
+Calculates the output amount given an input amount and pool reserves.
+
+**Inputs:**
+- `uint amountIn` — Input token amount  
+- `uint reserveIn` — Reserve of the input token in the pool  
+- `uint reserveOut` — Reserve of the output token in the pool
+
+**Returns:**
+- `uint amountOut` — Amount of output token received  
+
+---
+
 ### Deployment
 
 - [TKA (Token A)](https://sepolia.etherscan.io/address/0x697abAFb930a37c44F06742915B77CBC67945e09#code)
