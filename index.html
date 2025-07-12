@@ -226,30 +226,27 @@
         // Generic mint function for Token A or B
         async function mintToken(tokenContract, buttonId, label) {
             if (!signer) return alert("Connect wallet first.");
+            const button = document.getElementById(buttonId);
+
             try {
                 const userAddress = await signer.getAddress();
-                const button = document.getElementById(buttonId);
-
-                // Update and disable button after click to MINTING
-                button.innerText = `Minting ${label}...`;
+                button.innerHTML = `<i class="fas fa-coins mr-2"></i> Minting ${label}...`;
                 button.disabled = true;
 
-                // Wait for mint transaction
                 const tx = await tokenContract.mint(userAddress, ethers.parseEther("1000"));
                 await provider.waitForTransaction(tx.hash);
 
                 alert(`Minted 1000 ${label}!`);
-                // Restore button styles and enable
-                button.innerText = `Mint 1000 ${label}`;
+                button.innerHTML = `<i class="fas fa-coins mr-2"></i> Mint 1000 ${label}`;
                 button.disabled = false;
             } catch (err) {
                 console.error(`Mint ${label} error:`, err);
                 alert(`Minting ${label} failed. See console for details.`);
-                const button = document.getElementById(buttonId);
-                button.innerText = `Mint 1000 ${label}`;
+                button.innerHTML = `<i class="fas fa-coins mr-2"></i> Mint 1000 ${label}`;
                 button.disabled = false;
             }
         }
+
 
         // Wrapper functions
         function mintTokenA() {
@@ -286,7 +283,7 @@
             } catch (err) {
                 console.error("Approval error:", err);
                 alert("Approval failed. See console for details.");
-                document.getElementById("approveBtn").innerText = "Approve Tokens";
+                document.getElementById("approveBtn").innerHTML = `<i class="fas fa-check-circle mr-3"></i>Approve Tokens`;
                 document.getElementById("approveBtn").disabled = false;
             }
         }
