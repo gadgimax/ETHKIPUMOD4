@@ -106,13 +106,13 @@ The following test cases were implemented to validate the behavior of the `Simpl
 
 ---
 
-## 📁 Swap Code and Files Structure
+## Swap Code and Files Structure
 
 - `SimpleSwap.sol`: Complete source code of the LP token contract with swap and liquidity functionality.
 - `TokenA.sol`: Complete source code of Token A (TKA) contract.
 - `TokenB.sol`: Complete source code of Token B (TKB) contract.
 
-## 📚 Key Functions
+## Key Functions
 
 ### `swapExactTokensForTokens(...)`
 
