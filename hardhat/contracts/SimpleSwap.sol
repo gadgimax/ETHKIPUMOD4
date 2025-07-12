@@ -59,10 +59,10 @@ contract SimpleSwap is ERC20, Ownable {
         address tokenB
     ) internal view returns (uint reserveA, uint reserveB) {
         (address token0, address token1) = sortTokens(tokenA, tokenB);
-        Reserve memory r = reserves[token0][token1];
+        Reserve memory reserve = reserves[token0][token1];
         (reserveA, reserveB) = tokenA == token0
-            ? (r.reserve0, r.reserve1)
-            : (r.reserve1, r.reserve0);
+            ? (reserve.reserve0, reserve.reserve1)
+            : (reserve.reserve1, reserve.reserve0);
     }
 
     /// @notice Adds liquidity to a given token pair
