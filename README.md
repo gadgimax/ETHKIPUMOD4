@@ -157,6 +157,8 @@ Calculates the output amount given an input amount and pool reserves.
 
 ---
 
+Complete SimpleSwap.sol documentation can be found at: [`ETHKIPUMOD3 README.md`](https://github.com/gadgimax/ETHKIPUMOD3/blob/main/README.md)
+
 ### Deployment
 
 - [TKA (Token A)](https://sepolia.etherscan.io/address/0x697abAFb930a37c44F06742915B77CBC67945e09#code)
